@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 870" width="1200" height="870" fill="#1d2733" role="img" aria-label="Multiplexed 7-segment display">
+<title>Multiplexed 7-segment display</title>
+<defs><style>text{font-family:'Segoe UI', Helvetica, Arial, 'Liberation Sans', sans-serif}.m{font-family:Consolas, 'DejaVu Sans Mono', monospace}</style><marker id="k1f3a5f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3a5f"/></marker><marker id="k0b7a83" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b7a83"/></marker><marker id="kb86e00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b86e00"/></marker><marker id="kb3261e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker><marker id="k2e7d4f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e7d4f"/></marker><marker id="k5b6b7c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/></marker><marker id="k1d2733" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d2733"/></marker></defs>
+<rect width="1200" height="870" fill="#ffffff"/>
+<rect x="0" y="0" width="1200" height="6" fill="#1f3a5f"/>
+<text x="40" y="52" font-size="26" font-weight="700">Multiplexed 7-segment display</text>
+<text x="40" y="80" font-size="15" fill="#5b6b7c">Four digits share one segment bus; Timer0 lights them one at a time faster than the eye can follow</text>
+<rect x="40" y="120" width="200" height="260" rx="10" fill="#e8eef6" stroke="#1f3a5f" stroke-width="2"/>
+<text x="140" y="150" font-size="17" fill="#1f3a5f" font-weight="700" text-anchor="middle">PIC16</text>
+<text x="140" y="180" font-size="12" text-anchor="middle">PORTB: segments a–g, dp</text>
+<text x="140" y="200" font-size="12" text-anchor="middle">PORTA/D: digit enables</text>
+<text x="140" y="240" font-size="13" fill="#1f3a5f" font-weight="700" text-anchor="middle">Timer0 ISR</text>
+<text x="140" y="260" font-size="12" text-anchor="middle">every tick:</text>
+<text x="140" y="278" font-size="12" text-anchor="middle">1. blank all digits</text>
+<text x="140" y="296" font-size="12" text-anchor="middle">2. write next pattern</text>
+<text x="140" y="314" font-size="12" text-anchor="middle">3. enable next digit</text>
+<line x1="240" y1="170" x2="1010" y2="170" stroke="#1f3a5f" stroke-width="5"/>
+<text x="620" y="160" font-size="12.5" fill="#1f3a5f" font-weight="600" text-anchor="middle">shared segment bus (8 lines, through resistors)</text>
+<rect x="330" y="200" width="110" height="150" rx="8" fill="#ffffff" stroke="#1d2733" stroke-width="1.6"/>
+<rect x="360" y="222" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="412" y="230" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="412" y="290" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="360" y="334" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="349" y="290" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="349" y="230" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="360" y="279" width="50" height="9" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<line x1="385" y1="170" x2="385" y2="200" stroke="#1f3a5f" stroke-width="2"/>
+<rect x="355" y="370" width="60" height="30" rx="4" fill="#e3f3f4" stroke="#0b7a83" stroke-width="1.4"/>
+<text x="385" y="390" font-size="12.5" fill="#0b7a83" font-weight="700" text-anchor="middle">Q1</text>
+<line x1="385" y1="350" x2="385" y2="370" stroke="#0b7a83" stroke-width="2"/>
+<text x="385" y="420" font-size="12" fill="#5b6b7c" text-anchor="middle">digit 1 enable</text>
+<rect x="510" y="200" width="110" height="150" rx="8" fill="#ffffff" stroke="#1d2733" stroke-width="1.6"/>
+<rect x="540" y="222" width="50" height="9" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="592" y="230" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="592" y="290" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="540" y="334" width="50" height="9" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="529" y="290" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="529" y="230" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="540" y="279" width="50" height="9" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<line x1="565" y1="170" x2="565" y2="200" stroke="#1f3a5f" stroke-width="2"/>
+<rect x="535" y="370" width="60" height="30" rx="4" fill="#e3f3f4" stroke="#0b7a83" stroke-width="1.4"/>
+<text x="565" y="390" font-size="12.5" fill="#0b7a83" font-weight="700" text-anchor="middle">Q2</text>
+<line x1="565" y1="350" x2="565" y2="370" stroke="#0b7a83" stroke-width="2"/>
+<text x="565" y="420" font-size="12" fill="#5b6b7c" text-anchor="middle">digit 2 enable</text>
+<rect x="690" y="200" width="110" height="150" rx="8" fill="#ffffff" stroke="#1d2733" stroke-width="1.6"/>
+<rect x="720" y="222" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="772" y="230" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="772" y="290" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="720" y="334" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="709" y="290" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="709" y="230" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="720" y="279" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<line x1="745" y1="170" x2="745" y2="200" stroke="#1f3a5f" stroke-width="2"/>
+<rect x="715" y="370" width="60" height="30" rx="4" fill="#e3f3f4" stroke="#0b7a83" stroke-width="1.4"/>
+<text x="745" y="390" font-size="12.5" fill="#0b7a83" font-weight="700" text-anchor="middle">Q3</text>
+<line x1="745" y1="350" x2="745" y2="370" stroke="#0b7a83" stroke-width="2"/>
+<text x="745" y="420" font-size="12" fill="#5b6b7c" text-anchor="middle">digit 3 enable</text>
+<rect x="870" y="200" width="110" height="150" rx="8" fill="#ffffff" stroke="#1d2733" stroke-width="1.6"/>
+<rect x="900" y="222" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="952" y="230" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="952" y="290" width="9" height="50" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="900" y="334" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<rect x="889" y="290" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="889" y="230" width="9" height="50" rx="3" fill="#f1f3f6" stroke="none" stroke-width="0"/>
+<rect x="900" y="279" width="50" height="9" rx="3" fill="#b3261e" stroke="none" stroke-width="0"/>
+<line x1="925" y1="170" x2="925" y2="200" stroke="#1f3a5f" stroke-width="2"/>
+<rect x="895" y="370" width="60" height="30" rx="4" fill="#e3f3f4" stroke="#0b7a83" stroke-width="1.4"/>
+<text x="925" y="390" font-size="12.5" fill="#0b7a83" font-weight="700" text-anchor="middle">Q4</text>
+<line x1="925" y1="350" x2="925" y2="370" stroke="#0b7a83" stroke-width="2"/>
+<text x="925" y="420" font-size="12" fill="#5b6b7c" text-anchor="middle">digit 4 enable</text>
+<text x="1040" y="290" font-size="13" fill="#5b6b7c">Shows</text>
+<text x="1040" y="310" font-size="15" fill="#b3261e" font-weight="700">“0123”</text>
+<text x="40" y="480" font-size="16" fill="#1f3a5f" font-weight="700">Timing: one digit per Timer0 tick</text>
+<text x="180" y="530" font-size="13.5" fill="#1f3a5f" font-weight="600" text-anchor="end">Timer0 tick</text>
+<line x1="200" y1="538" x2="200" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="260" y1="538" x2="260" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="320" y1="538" x2="320" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="380" y1="538" x2="380" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="440" y1="538" x2="440" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="500" y1="538" x2="500" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="560" y1="538" x2="560" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="620" y1="538" x2="620" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="680" y1="538" x2="680" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="740" y1="538" x2="740" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="800" y1="538" x2="800" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="860" y1="538" x2="860" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="920" y1="538" x2="920" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="980" y1="538" x2="980" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="1040" y1="538" x2="1040" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<line x1="1100" y1="538" x2="1100" y2="514" stroke="#1f3a5f" stroke-width="2"/>
+<text x="180" y="574" font-size="13.5" fill="#0b7a83" font-weight="600" text-anchor="end">Digit 1</text>
+<polyline points="200,558 260,558 260,582 320,582 320,582 380,582 380,582 440,582 440,558 500,558 500,582 560,582 560,582 620,582 620,582 680,582 680,558 740,558 740,582 800,582 800,582 860,582 860,582 920,582 920,558 980,558 980,582 1040,582 1040,582 1100,582 1100,582 1160,582" fill="none" stroke="#0b7a83" stroke-width="2"/>
+<text x="180" y="618" font-size="13.5" fill="#0b7a83" font-weight="600" text-anchor="end">Digit 2</text>
+<polyline points="200,626 260,626 260,602 320,602 320,626 380,626 380,626 440,626 440,626 500,626 500,602 560,602 560,626 620,626 620,626 680,626 680,626 740,626 740,602 800,602 800,626 860,626 860,626 920,626 920,626 980,626 980,602 1040,602 1040,626 1100,626 1100,626 1160,626" fill="none" stroke="#0b7a83" stroke-width="2"/>
+<text x="180" y="662" font-size="13.5" fill="#0b7a83" font-weight="600" text-anchor="end">Digit 3</text>
+<polyline points="200,670 260,670 260,670 320,670 320,646 380,646 380,670 440,670 440,670 500,670 500,670 560,670 560,646 620,646 620,670 680,670 680,670 740,670 740,670 800,670 800,646 860,646 860,670 920,670 920,670 980,670 980,670 1040,670 1040,646 1100,646 1100,670 1160,670" fill="none" stroke="#0b7a83" stroke-width="2"/>
+<text x="180" y="706" font-size="13.5" fill="#0b7a83" font-weight="600" text-anchor="end">Digit 4</text>
+<polyline points="200,714 260,714 260,714 320,714 320,714 380,714 380,690 440,690 440,714 500,714 500,714 560,714 560,714 620,714 620,690 680,690 680,714 740,714 740,714 800,714 800,714 860,714 860,690 920,690 920,714 980,714 980,714 1040,714 1040,714 1100,714 1100,690 1160,690" fill="none" stroke="#0b7a83" stroke-width="2"/>
+<path d="M 200 744 V 754 H 440 V 744" fill="none" stroke="#b86e00" stroke-width="1.5"/>
+<text x="320" y="772" font-size="13" fill="#b86e00" font-weight="600" text-anchor="middle">one full frame = 4 ticks</text>
+<text x="40" y="810" font-size="13.5">Example: Timer0 overflow every ≈ 4 ms → frame ≈ 16 ms → ≈ 60 Hz refresh, no visible flicker.</text>
+<text x="40" y="832" font-size="13.5" fill="#5b6b7c">Each digit is lit 1/4 of the time, so segment current is set higher than for a static display.</text>
+<text x="1160" y="854" font-size="12" fill="#5b6b7c" text-anchor="end">Mohammed Mahyoub, Embedded Systems, IoT &amp; Industrial Automation</text>
+</svg>

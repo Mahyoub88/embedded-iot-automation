@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" fill="#1d2733" role="img" aria-label="System overview: PIC16 controller and its peripherals">
+<title>System overview: PIC16 controller and its peripherals</title>
+<defs><style>text{font-family:'Segoe UI', Helvetica, Arial, 'Liberation Sans', sans-serif}.m{font-family:Consolas, 'DejaVu Sans Mono', monospace}</style><marker id="m0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b7a83"/></marker><marker id="m0s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b7a83"/></marker><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b86e00"/></marker></defs>
+<rect width="1200" height="860" fill="#ffffff"/>
+<rect x="0" y="0" width="1200" height="6" fill="#1f3a5f"/>
+<text x="40" y="52" font-size="26" font-weight="700" fill="#1d2733">System overview: PIC16 controller and its peripherals</text>
+<text x="40" y="80" font-size="15" fill="#5b6b7c">One microcontroller, five buses: GPIO, ADC, I²C, serial shift-out and SPI</text>
+<rect x="470" y="330" width="260" height="220" rx="12" fill="#e8eef6" stroke="#1f3a5f" stroke-width="2.2"/>
+<text x="600" y="368" font-size="20" fill="#1f3a5f" font-weight="700" text-anchor="middle">PIC16 MCU</text>
+<text x="600" y="392" font-size="13.5" fill="#5b6b7c" text-anchor="middle">firmware in mikroC</text>
+<g fill="#ffffff" stroke="#d5dde6" stroke-width="1">
+<rect x="492" y="408" width="216" height="22" rx="4"/><rect x="492" y="434" width="216" height="22" rx="4"/><rect x="492" y="460" width="216" height="22" rx="4"/><rect x="492" y="486" width="216" height="22" rx="4"/><rect x="492" y="512" width="216" height="22" rx="4"/>
+</g>
+<g font-size="12.5" font-weight="500" text-anchor="middle">
+<text x="600" y="424">CPU + program Flash</text><text x="600" y="450">Timer0 + interrupts</text><text x="600" y="476">10-bit ADC</text><text x="600" y="502">Data EEPROM</text><text x="600" y="528">I²C (MSSP) + GPIO</text>
+</g>
+<text x="60" y="130" font-size="15" fill="#0b7a83" font-weight="700">Inputs</text>
+<g fill="#e3f3f4" stroke="#0b7a83" stroke-width="1.5">
+<rect x="40" y="145" width="290" height="86" rx="8"/><rect x="40" y="255" width="290" height="86" rx="8"/><rect x="40" y="365" width="290" height="86" rx="8"/><rect x="40" y="475" width="290" height="86" rx="8"/>
+</g>
+<g font-size="15" fill="#0b7a83" font-weight="700" text-anchor="middle">
+<text x="185" y="173.4">Analog sensors</text><text x="185" y="283.4">Keypad matrix</text><text x="185" y="393.4">Digital inputs</text><text x="185" y="503.4">Real-time clock DS1307</text>
+</g>
+<g font-size="12.5" text-anchor="middle">
+<text x="185" y="197">temperature, voltage, level</text><text x="185" y="213.9">→ ADC channels</text>
+<text x="185" y="307">rows driven, columns read</text><text x="185" y="323.9">→ GPIO port</text>
+<text x="185" y="417">switches, limit sensors</text><text x="185" y="433.9">→ GPIO + interrupt-on-change</text>
+<text x="185" y="527">time and date in BCD</text><text x="185" y="543.9">↔ I²C, battery-backed</text>
+</g>
+<text x="1140" y="130" font-size="15" fill="#b86e00" font-weight="700" text-anchor="end">Outputs</text>
+<g fill="#fbf1e1" stroke="#b86e00" stroke-width="1.5">
+<rect x="870" y="145" width="290" height="86" rx="8"/><rect x="870" y="255" width="290" height="86" rx="8"/><rect x="870" y="365" width="290" height="86" rx="8"/><rect x="870" y="475" width="290" height="86" rx="8"/>
+</g>
+<rect x="870" y="585" width="290" height="86" rx="8" fill="#fbe9e7" stroke="#b3261e" stroke-width="1.5"/>
+<g font-size="15" fill="#b86e00" font-weight="700" text-anchor="middle">
+<text x="1015" y="173.4">7-segment display</text><text x="1015" y="283.4">Character LCD</text><text x="1015" y="393.4">Nokia 5110 graphic LCD</text><text x="1015" y="503.4">74HC595 shift registers</text>
+</g>
+<text x="1015" y="613.4" font-size="15" fill="#b3261e" font-weight="700" text-anchor="middle">Actuators</text>
+<g font-size="12.5" text-anchor="middle">
+<text x="1015" y="197">multiplexed digits</text><text x="1015" y="213.9">← GPIO, Timer0 refresh</text>
+<text x="1015" y="307">menus and messages</text><text x="1015" y="323.9">← 4-bit parallel bus</text>
+<text x="1015" y="417">84 × 48 pixels, PCD8544</text><text x="1015" y="433.9">← SPI-style serial</text>
+<text x="1015" y="527">8 outputs per chip, chainable</text><text x="1015" y="543.9">← 3 pins: data, clock, latch</text>
+<text x="1015" y="637">relay, lock, buzzer / alarm</text><text x="1015" y="653.9">← GPIO through drivers</text>
+</g>
+<g stroke="#0b7a83" stroke-width="1.8" marker-end="url(#m0)">
+<line x1="334" y1="188" x2="466" y2="360"/><line x1="334" y1="298" x2="466" y2="398.5"/><line x1="334" y1="408" x2="466" y2="437"/><line x1="334" y1="518" x2="466" y2="520" marker-start="url(#m0s)"/>
+</g>
+<g stroke="#b86e00" stroke-width="1.8" marker-end="url(#m1)">
+<line x1="734" y1="360" x2="866" y2="188"/><line x1="734" y1="404" x2="866" y2="298"/><line x1="734" y1="448" x2="866" y2="408"/><line x1="734" y1="492" x2="866" y2="518"/><line x1="734" y1="536" x2="866" y2="628"/>
+</g>
+<rect x="40" y="700" width="1120" height="120" rx="10" fill="#f6f8fb" stroke="#d5dde6" stroke-width="1"/>
+<text x="60" y="730" font-size="15" fill="#1f3a5f" font-weight="700">Board essentials</text>
+<g fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2">
+<rect x="60" y="748" width="205" height="56" rx="6"/><rect x="280" y="748" width="205" height="56" rx="6"/><rect x="500" y="748" width="205" height="56" rx="6"/><rect x="720" y="748" width="205" height="56" rx="6"/><rect x="940" y="748" width="205" height="56" rx="6"/>
+</g>
+<g font-size="14" fill="#1f3a5f" font-weight="700" text-anchor="middle">
+<text x="162" y="772">Power</text><text x="382" y="772">Clock</text><text x="602" y="772">Reset</text><text x="822" y="772">ICSP header</text><text x="1042" y="772">Level shifting</text>
+</g>
+<g font-size="12" text-anchor="middle">
+<text x="162" y="792">regulated 5 V, decoupling</text><text x="382" y="792">crystal oscillator</text><text x="602" y="792">MCLR pull-up + button</text><text x="822" y="792">in-circuit programming</text><text x="1042" y="792">5 V MCU ↔ 3.3 V Nokia LCD</text>
+</g>
+<text x="1160" y="844" font-size="12" fill="#5b6b7c" text-anchor="end">Mohammed Mahyoub, Embedded Systems, IoT &amp; Industrial Automation</text>
+</svg>

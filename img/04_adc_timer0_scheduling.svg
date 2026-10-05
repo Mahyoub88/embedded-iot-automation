@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 775" width="1200" height="775" fill="#1d2733" role="img" aria-label="Measuring with the ADC on a Timer0 schedule">
+<title>Measuring with the ADC on a Timer0 schedule</title>
+<defs><style>text{font-family:'Segoe UI', Helvetica, Arial, 'Liberation Sans', sans-serif}.m{font-family:Consolas, 'DejaVu Sans Mono', monospace}</style><marker id="k1f3a5f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3a5f"/></marker><marker id="k0b7a83" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0b7a83"/></marker><marker id="kb86e00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b86e00"/></marker><marker id="kb3261e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker><marker id="k2e7d4f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e7d4f"/></marker><marker id="k5b6b7c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/></marker><marker id="k1d2733" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d2733"/></marker></defs>
+<rect width="1200" height="775" fill="#ffffff"/>
+<rect x="0" y="0" width="1200" height="6" fill="#1f3a5f"/>
+<text x="40" y="52" font-size="26" font-weight="700">Measuring with the ADC on a Timer0 schedule</text>
+<text x="40" y="80" font-size="15" fill="#5b6b7c">The interrupt only keeps time; the main loop does the slow work</text>
+<rect x="40" y="120" width="400" height="420" rx="12" fill="#fbf1e1" stroke="#b86e00" stroke-width="1.6"/>
+<text x="60" y="152" font-size="17" fill="#b86e00" font-weight="700">Timer0 interrupt (ISR)</text>
+<rect x="64" y="175" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="203" font-size="14" font-weight="500" text-anchor="middle">TMR0 overflows → T0IF set</text>
+<line x1="240" y1="220" x2="240" y2="232" stroke="#b86e00" stroke-width="1.6" marker-end="url(#kb86e00)"/>
+<rect x="64" y="233" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="261" font-size="14" font-weight="500" text-anchor="middle">Reload TMR0</text>
+<line x1="240" y1="278" x2="240" y2="290" stroke="#b86e00" stroke-width="1.6" marker-end="url(#kb86e00)"/>
+<rect x="64" y="291" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="319" font-size="14" font-weight="500" text-anchor="middle">Refresh next display digit</text>
+<line x1="240" y1="336" x2="240" y2="348" stroke="#b86e00" stroke-width="1.6" marker-end="url(#kb86e00)"/>
+<rect x="64" y="349" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="377" font-size="14" font-weight="500" text-anchor="middle">Count ticks; every N ticks:</text>
+<line x1="240" y1="394" x2="240" y2="406" stroke="#b86e00" stroke-width="1.6" marker-end="url(#kb86e00)"/>
+<rect x="64" y="407" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="435" font-size="14" font-weight="500" text-anchor="middle">set flag  sample_due = 1</text>
+<line x1="240" y1="452" x2="240" y2="464" stroke="#b86e00" stroke-width="1.6" marker-end="url(#kb86e00)"/>
+<rect x="64" y="465" width="352" height="44" rx="6" fill="#ffffff" stroke="#b86e00" stroke-width="1.2"/>
+<text x="240" y="493" font-size="14" font-weight="500" text-anchor="middle">Clear T0IF, return</text>
+<rect x="520" y="120" width="640" height="420" rx="12" fill="#e8eef6" stroke="#1f3a5f" stroke-width="1.6"/>
+<text x="1140" y="152" font-size="17" fill="#1f3a5f" font-weight="700" text-anchor="end">Main loop</text>
+<polygon points="840,175 960,197 840,219 720,197" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/>
+<text x="840" y="202" font-size="13.5" fill="#1f3a5f" font-weight="700" text-anchor="middle">sample_due?</text>
+<path d="M 720 197 H 600 V 163 H 840 V 173" fill="none" stroke="#5b6b7c" stroke-width="1.4" marker-end="url(#k5b6b7c)"/>
+<text x="660" y="191" font-size="12.5" fill="#5b6b7c" font-weight="600" text-anchor="middle">no</text>
+<line x1="840" y1="220" x2="840" y2="232" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<rect x="600" y="233" width="480" height="44" rx="6" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2"/>
+<text x="840" y="261" font-size="14" font-weight="500" text-anchor="middle">Clear flag, select channel, wait acquisition time</text>
+<line x1="840" y1="278" x2="840" y2="290" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<rect x="600" y="291" width="480" height="44" rx="6" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2"/>
+<text x="840" y="319" font-size="14" font-weight="500" text-anchor="middle">Start conversion (GO/DONE), wait for DONE</text>
+<line x1="840" y1="336" x2="840" y2="348" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<rect x="600" y="349" width="480" height="44" rx="6" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2"/>
+<text x="840" y="377" font-size="14" font-weight="500" text-anchor="middle">Read 10-bit result (0–1023)</text>
+<line x1="840" y1="394" x2="840" y2="406" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<rect x="600" y="407" width="480" height="44" rx="6" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2"/>
+<text x="840" y="435" font-size="14" font-weight="500" text-anchor="middle">Scale: value = raw × Vref / 1023</text>
+<line x1="840" y1="452" x2="840" y2="464" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<rect x="600" y="465" width="480" height="44" rx="6" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.2"/>
+<text x="840" y="493" font-size="14" font-weight="500" text-anchor="middle">Display, compare limits, log to EEPROM on change</text>
+<text x="852" y="230" font-size="12.5" fill="#5b6b7c" font-weight="600">yes</text>
+<path d="M 1080 487 H 1120 V 197 H 962" fill="none" stroke="#1f3a5f" stroke-width="1.6" marker-end="url(#k1f3a5f)"/>
+<text x="1128" y="340" font-size="12.5" fill="#1f3a5f" font-weight="600">loop</text>
+<path d="M 418 429 C 520 429, 560 300, 716 205" fill="none" stroke="#b86e00" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#kb86e00)"/>
+<text x="500" y="380" font-size="12.5" fill="#b86e00" font-weight="700" text-anchor="middle">flag</text>
+<rect x="40" y="570" width="1120" height="160" rx="10" fill="#f6f8fb" stroke="#d5dde6" stroke-width="1"/>
+<text x="60" y="600" font-size="16" fill="#1f3a5f" font-weight="700">Design rules</text>
+<text x="60" y="628" font-size="14">Keep the ISR short: no ADC waits, no LCD writes, no floating point inside the interrupt.</text>
+<text x="60" y="653" font-size="14">Variables shared between ISR and main loop are declared volatile.</text>
+<text x="60" y="678" font-size="14">Timer0 period = 4 / Fosc × prescaler × (256 − reload). Example: 8 MHz, 1:32 → ≈ 4.1 ms per tick.</text>
+<text x="60" y="703" font-size="14">EEPROM cells wear out with writes, so values are written only when they change, not on every sample.</text>
+<text x="1160" y="759" font-size="12" fill="#5b6b7c" text-anchor="end">Mohammed Mahyoub, Embedded Systems, IoT &amp; Industrial Automation</text>
+</svg>
