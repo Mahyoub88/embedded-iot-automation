@@ -30,15 +30,7 @@ Designed and prototyped embedded monitoring and control solutions using microcon
 10. [Beyond PIC: AVR, Arduino, PLC and IoT](#10-beyond-pic-avr-arduino-plc-and-iot)
 11. [Validation checklist](#11-validation-checklist)
 
-Also: [Project photos](#project-photos) · [Illustrated engineering guide](docs/engineering-guide.md)
-
-## Project photos
-
-| PLC-based control system | EEPROM data storage & retrieval system |
-|---|---|
-| ![Industrial automation and PLC-based control system](docs/overview/plc-system.jpg) | ![Embedded EEPROM data storage and retrieval system](docs/overview/eeprom-system.jpg) |
-
-The [illustrated engineering guide](docs/engineering-guide.md) has the design rationale, evidence notes and the full source gallery. Parts of the PIC work started from a mikroC & Proteus training course; the training material is credited, not republished.
+Also: [Illustrated engineering guide](docs/engineering-guide.md)
 
 The code blocks below are short reference snippets in mikroC style that show how each technique works.
 
@@ -203,6 +195,8 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 
 ## Related
 
+- [Industrial Automation & PLC-Based Control Systems](https://github.com/Mahyoub88/industrial-automation-plc), a separate project
+- [Embedded EEPROM Data Storage & Retrieval System](https://github.com/Mahyoub88/eeprom-data-storage-pic), a separate project
 - [Engineering Monitoring & Automation Applications (.NET)](https://github.com/Mahyoub88/dotnet-monitoring-apps)
 - [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
 - [All projects](https://mahyoub88.github.io/#work)
