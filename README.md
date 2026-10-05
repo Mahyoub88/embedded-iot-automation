@@ -30,6 +30,16 @@ Designed and prototyped embedded monitoring and control solutions using microcon
 10. [Beyond PIC: AVR, Arduino, PLC and IoT](#10-beyond-pic-avr-arduino-plc-and-iot)
 11. [Validation checklist](#11-validation-checklist)
 
+Also: [Project photos](#project-photos) · [Illustrated engineering guide](docs/engineering-guide.md)
+
+## Project photos
+
+| PLC-based control system | EEPROM data storage & retrieval system |
+|---|---|
+| ![Industrial automation and PLC-based control system](docs/overview/plc-system.jpg) | ![Embedded EEPROM data storage and retrieval system](docs/overview/eeprom-system.jpg) |
+
+The [illustrated engineering guide](docs/engineering-guide.md) has the design rationale, evidence notes and the full source gallery. Parts of the PIC work started from a mikroC & Proteus training course; the training material is credited, not republished.
+
 The code blocks below are short reference snippets in mikroC style that show how each technique works.
 
 ## 1. System overview
