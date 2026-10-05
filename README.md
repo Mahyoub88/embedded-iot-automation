@@ -1,5 +1,13 @@
 # Embedded Systems, IoT & Industrial Automation
 
+## Illustrated engineering guide
+
+[Read the full engineering guide](docs/engineering-guide.md) for architecture, workflow, design rationale, evidence notes and the source gallery.
+
+![Engineering overview](docs/overview/architecture.svg)
+
+*Explanatory diagram added for this write-up.*
+
 **Author:** Mohammed Mahyoub.
 
 Designed and prototyped embedded monitoring and control solutions using microcontrollers, sensors, communication modules, actuators, and PLC platforms.
