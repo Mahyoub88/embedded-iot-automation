@@ -48,3 +48,11 @@ The following are suggested review checks. A checklist entry is not a claimed pa
 - New SVG figures and explanatory text were authored for this documentation update; they are not original photographs or new measured results.
 - Reused JPG media were exported from the corresponding LinkedIn project media viewer. Source titles are preserved in the captions; no expiring image URLs are required.
 - PIC examples originate in the Microcontroller Programming Techniques training pack; third-party code/libraries are not republished as original work.
+
+## Additional source media
+
+![Embedded EEPROM Data Storage & Retrieval System](overview/eeprom-system.jpg)
+
+*Embedded EEPROM Data Storage & Retrieval System: existing LinkedIn experience media, exported from the media viewer. This is the available preview resolution; it is a source summary sheet/screenshot, not a new measurement.*
+
+Source: [LinkedIn experience media](https://www.linkedin.com/in/mohammed-mahyoub/details/experience/).
