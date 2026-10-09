@@ -1,5 +1,7 @@
 # Embedded Systems & IoT — PIC Firmware and Peripheral Integration
 
+[Read case study](https://mahyoub88.github.io/projects/proj-embedded-iot/) · [Project index](docs/PROJECTS.md) · [Engineering guide](docs/engineering-guide.md)
+
 Designed and prototyped embedded monitoring and control solutions using microcontrollers, sensors, communication modules, actuators and PLC platforms. Most of the firmware targets PIC16 microcontrollers, written in mikroC, simulated in Proteus and then built and tested on hardware.
 
 **Author:** Mohammed Mahyoub · [Portfolio](https://mahyoub88.github.io/projects/proj-embedded-iot/)
@@ -197,14 +199,6 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 
 - [Industrial Automation & PLC-Based Control Systems](https://github.com/Mahyoub88/industrial-automation-plc), a separate project
 - [Embedded EEPROM Data Storage & Retrieval System](https://github.com/Mahyoub88/eeprom-data-storage-pic), a separate project
-- [Engineering Monitoring & Automation Applications (.NET)](https://github.com/Mahyoub88/dotnet-monitoring-apps)
+- [Engineering Software — Independent Applications](https://github.com/Mahyoub88/dotnet-monitoring-apps)
 - [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
 - [All projects](https://mahyoub88.github.io/#work)
-
-## Illustrated project pages
-
-Project-specific diagrams, source media and implementation context:
-
-- [Embedded Systems & IoT — PIC Firmware and Peripheral Integration](https://mahyoub88.github.io/projects/proj-embedded-iot/)
-
-[Browse all engineering case studies](https://mahyoub88.github.io/projects/)
