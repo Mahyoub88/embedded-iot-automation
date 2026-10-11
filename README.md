@@ -202,3 +202,5 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 - [Engineering Software — Independent Applications](https://github.com/Mahyoub88/dotnet-monitoring-apps)
 - [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
 - [All projects](https://mahyoub88.github.io/#work)
+
+- [Embedded Systems & IoT — PIC Firmware and Peripheral Integration — technical walkthrough](docs/technical-walkthroughs/proj-embedded-iot.md)
