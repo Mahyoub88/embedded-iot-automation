@@ -1,219 +1,207 @@
-# PIC Firmware and Peripheral Integration — Engineering Guide
+# PIC-Based Equipment Room Monitoring & Control System
 
-[Read the illustrated web case study](https://mahyoub88.github.io/projects/proj-embedded-iot/) for the project overview and source diagrams.
+## Purpose and scope
 
-# PIC Embedded Systems — Peripheral Integration & Persistent Storage
+A local controller for a small equipment room or electronics cabinet. It monitors temperature, humidity and door state, commands ventilation, supports keypad access and exit release, displays status and retains settings after power removal.
 
-Designed and prototyped embedded monitoring and control solutions using microcontrollers, sensors, communication modules, actuators and PLC platforms. Most of the firmware targets PIC16 microcontrollers, written in mikroC, simulated in Proteus and then built and tested on hardware.
+This is the proposed integrated application of the preserved PIC peripheral and EEPROM implementations. The original media documents those earlier building blocks. The new room layout, wiring map, firmware model, default thresholds and validation plan are reference design artifacts, not evidence of a newly installed complete room system.
 
-**Author:** Mohammed Mahyoub · [Portfolio](https://mahyoub88.github.io/projects/proj-embedded-iot/)
+## Requirements
 
-## At a glance
+| ID | Requirement | Verification |
+|---|---|---|
+| R01 | Sample temperature and humidity once per second | Inject changing and invalid values |
+| R02 | Use fan ON/OFF hysteresis | Sweep across both limits |
+| R03 | Flag stale temperature; command fan ON | Stop valid samples for >3 s |
+| R04 | Unlock on valid PIN or exit request | Valid/invalid code and exit tests |
+| R05 | Relock after a timed pulse | Check output deadline without blocking sensing |
+| R06 | Alarm on unauthorized or prolonged opening | Door contact scenarios |
+| R07 | Acknowledge buzzer without clearing faults | Active fault + acknowledge |
+| R08 | Retain confirmed settings after power cycle | Save, restart and compare |
+| R09 | Reject corrupt/incomplete EEPROM records | Byte-boundary interrupted-write tests |
+| R10 | Display RTC status; reject restricted access if time invalid | Remove RTC response |
 
-| Aspect | Detail |
-|---|---|
-| Main controller | PIC16 family (8-bit), firmware in mikroC |
-| Other platforms | AVR, Arduino, PLC |
-| Tools | mikroC, Proteus simulation, device programmer / ICSP |
-| Interfaces | GPIO, 10-bit ADC, Timer0 interrupts, I²C, serial shift-out, SPI-style serial |
-| Peripherals | Multiplexed 7-segment displays, character LCD, Nokia 5110 graphic LCD, DS1307 RTC, 74HC595 shift registers, keypad, relays and buzzers |
-| Storage | On-chip data EEPROM, battery-backed RTC RAM |
-| Scope | Real-time monitoring and control, sensor integration, telemetry, hardware configuration, functional testing and validation |
+## Reference hardware and bill of materials
 
-## Contents
+Quantities and selections define a prototype baseline; load ratings require actual parts selection.
 
-1. [System overview](#1-system-overview)
-2. [Development workflow](#2-development-workflow)
-3. [Multiplexed 7-segment displays](#3-multiplexed-7-segment-displays)
-4. [Analog measurement on a Timer0 schedule](#4-analog-measurement-on-a-timer0-schedule)
-5. [Real-time clock (DS1307)](#5-real-time-clock-ds1307)
-6. [Output expansion with 74HC595](#6-output-expansion-with-74hc595)
-7. [Keypad and LCD access control](#7-keypad-and-lcd-access-control)
-8. [Nokia 5110 graphic LCD](#8-nokia-5110-graphic-lcd)
-9. [Memory technologies and device programming](#9-memory-technologies-and-device-programming)
-10. [Beyond PIC: AVR, Arduino, PLC and IoT](#10-beyond-pic-avr-arduino-plc-and-iot)
-11. [Validation checklist](#11-validation-checklist)
+| Qty | Component | Function / selection criteria |
+|---|---|---|
+| 1 | PIC16F877A, DIP-40 | 5 V controller, 10-bit ADC, I²C, internal EEPROM |
+| 1 | 8 MHz crystal + load capacitors | Match crystal load specification; do not assume capacitor value |
+| 1 | LM35 temperature sensor | 5 V supply, 10 mV/°C analog output to AN0 |
+| 1 | SHT31-DIS compatible module | Humidity via I²C; verify module supports the 5 V bus |
+| 1 | DS1307 RTC assembly | Crystal, backup cell, I²C; inspect charging circuit |
+| 1 | 16×2 HD44780-compatible LCD | 5 V, 4-bit mode, contrast potentiometer |
+| 1 | 4×4 matrix keypad | 8 GPIO; masked local PIN entry |
+| 1 | NC magnetic door contact | Closed contact to GND indicates closed door |
+| 2 | Momentary buttons | Exit release and alarm acknowledge |
+| 1 each | 12 V fan and 12 V lock prototype | Actual current/inrush determines driver sizing |
+| 2 | Logic-level N-MOSFET channels | Rated at 5 V gate drive, with protection and gate pull-down |
+| 1 | Buzzer driver + status LED | Match buzzer current; LED series resistor |
+| 1 | 12 V DC supply + 5 V buck converter | Size from load budget and simultaneous activation |
+| As needed | Fuses, diode protection, bypass caps, connectors | Local decoupling, common reference, separated load paths |
 
+## System diagrams
 
+### 1. architecture
 
-The code blocks below are short reference snippets in mikroC style that show how each technique works.
+![01-architecture.svg](../img/equipment-room/01-architecture.svg)
 
-## 1. System overview
+### 2. pin and wiring map
 
-A single PIC16 sits at the centre. Sensors, the keypad, digital inputs and the real-time clock feed it; displays, shift registers and actuators are driven by it. Each peripheral uses the bus that suits it: the ADC for analog sensors, I²C for the clock, a three-wire serial shift-out for extra outputs and an SPI-style link for the graphic LCD.
+![02-pin-and-wiring-map.svg](../img/equipment-room/02-pin-and-wiring-map.svg)
 
-![System overview: PIC16 MCU with its inputs, outputs and board essentials](../img/01_system_overview.svg)
+### 3. output driver
 
-## 2. Development workflow
+![03-output-driver.svg](../img/equipment-room/03-output-driver.svg)
 
-Every design goes through the same loop: write the firmware in mikroC, compile it to a HEX file, run it in Proteus against simulated displays and sensors, then program the real chip and test it on the board. Faults found in simulation go straight back to the code; faults found on hardware are debugged first, because the cause may be wiring or power rather than firmware.
+### 4. control flow
 
-![Development workflow from mikroC source to tested hardware](../img/02_development_workflow.svg)
+![04-control-flow.svg](../img/equipment-room/04-control-flow.svg)
 
-## 3. Multiplexed 7-segment displays
+### 5. access states
 
-Driving four digits directly would take 32 pins. Multiplexing shares one 8-line segment bus between all digits and switches each digit on through its own transistor. The Timer0 interrupt lights one digit per tick: blank, load the next pattern, enable the next digit. At around 60 full refreshes per second the eye sees all four digits lit at once.
+![05-access-states.svg](../img/equipment-room/05-access-states.svg)
 
-![Multiplexed 7-segment display: shared segment bus, digit transistors and the Timer0 timing](../img/03_7segment_multiplexing.svg)
+### 6. eeprom layout
 
-~~~c
-volatile unsigned char digit = 0;
-unsigned char pattern[4];            // segment pattern for each digit
+![06-eeprom-layout.svg](../img/equipment-room/06-eeprom-layout.svg)
 
-void interrupt() {
-  if (INTCON.T0IF) {
-    TMR0 = 0;                        // reload
-    PORTD = 0x00;                    // 1. blank all digits (no ghosting)
-    PORTB = pattern[digit];          // 2. next segment pattern
-    PORTD = 1 << digit;              // 3. enable that digit
-    digit = (digit + 1) & 0x03;
-    INTCON.T0IF = 0;
-  }
-}
-~~~
+### 7. power distribution
 
-Blanking before changing the pattern matters: without it, the previous digit briefly shows the next digit's segments.
+![07-power-distribution.svg](../img/equipment-room/07-power-distribution.svg)
 
-## 4. Analog measurement on a Timer0 schedule
+## Pin map
 
-The same Timer0 tick also paces measurements. The interrupt only counts ticks and sets a flag; the main loop sees the flag, runs the ADC conversion, scales the result and updates the display. Slow work stays out of the interrupt, so the display refresh never stutters.
+| Signal | DIP-40 pin | Connection | Design note |
+|---|---|---|---|
+| AN0 / RA0 | 2 | LM35 analog output | 0–1 V for 0–100°C |
+| RA1 | 3 | Exit request, active low | 10 kΩ pull-up; button to GND |
+| RA2 | 4 | Alarm acknowledge, active low | 10 kΩ pull-up; button to GND |
+| RB0–RB3 | 33–36 | Keypad rows R1–R4 | One row low; others high-Z |
+| RB4–RB7 | 37–40 | Keypad columns C1–C4 | Pull-ups enabled; debounce |
+| RC3 / RC4 | 18 / 23 | I²C SCL / SDA | 100 kHz; pull-ups to +5 V |
+| RD0–RD3 | 19–22 | LCD D4–D7 | LCD RW → GND |
+| RD4 / RD5 | 27 / 28 | LCD RS / EN | 4-bit interface |
+| RD6 | 29 | Door contact | NC closed to GND = door closed |
+| RC0 / RC1 / RC2 | 15 / 16 / 17 | Fan / unlock / buzzer | External drivers; active high |
+| RC5 | 24 | Status LED | Series resistor |
+| RC6 / RC7 | 25 / 26 | Reserved serial debug | Not required for baseline |
 
-![ADC sampling scheduled by Timer0: short ISR, work in the main loop](../img/04_adc_timer0_scheduling.svg)
+VDD: pins 11 and 32. VSS: pins 12 and 31. MCLR: pin 1 with 10 kΩ pull-up. OSC1/OSC2: pins 13/14. Disable low-voltage programming to use RB3 for keypad scanning. RB6/RB7 serve ICSP; isolate the keypad during programming.
 
-~~~c
-volatile unsigned char tick = 0, sample_due = 0;
-// in the Timer0 ISR:  if (++tick >= 50) { tick = 0; sample_due = 1; }
+## Wiring details
 
-void main() {
-  unsigned int raw;
-  unsigned long mv;
-  /* port, ADC and Timer0 setup here */
-  while (1) {
-    if (sample_due) {
-      sample_due = 0;
-      raw = ADC_Read(0);                        // 10-bit: 0..1023
-      mv  = (unsigned long)raw * 5000 / 1023;   // Vref = 5 V
-      /* update display, check limits, store on change */
-    }
-  }
-}
-~~~
+- LM35: connect supply and ground according to the selected package pinout; output → RA0/AN0. The simple baseline measures non-negative temperatures. Keep sensor wiring away from switched load current. Add an analog filter only after checking source impedance and ADC acquisition requirements.
+- SHT31 and DS1307 share RC3/SCL and RC4/SDA at 100 kHz. SHT31 ADDR low gives 7-bit address 0x44; DS1307 is 0x68. Use one effective pull-up pair; 4.7 kΩ is an initial short-bus value to validate, not a universal requirement. Bare SHT3x supports a supply range that includes 5 V, but breakout boards may differ.
+- LCD: RD0–3 → D4–7; RD4 → RS; RD5 → EN; RW → GND. Connect contrast wiper to VO. Follow module backlight-current requirements rather than assuming a resistor is fitted.
+- Keypad: drive only the selected row low and leave other rows as inputs/high impedance; columns are inputs with pull-ups. Require a stable press/release and reject simultaneous ambiguous keys. Disable LVP; no pin may be driven simultaneously by keypad and ICSP programmer.
+- Door: NC contact closed to ground; external 10 kΩ pull-up to 5 V; RD6 reads high when open or disconnected. This detects an open wire as open door, but does not detect every short-circuit fault.
+- Exit and acknowledge: separate normally-open contacts to ground with pull-ups. Exit request remains usable during keypad lockout. Emergency egress must remain independent of firmware.
+- Fan/lock: PIC output → 100 Ω gate resistor → selected logic-level MOSFET; 100 kΩ gate pull-down; source → ground; drain → load negative. Load positive → fused 12 V. Inductive coil flyback diode cathode → 12 V, anode → drain. Select current, inrush, voltage, diode and thermal ratings from the actual load.
 
-**Timer0 period** = 4 / Fosc × prescaler × (256 − reload). With an 8 MHz crystal and a 1:32 prescaler that is about 4.1 ms per tick, so 50 ticks give a sample roughly every 200 ms.
+## Measurement and calibration
 
-Values that must survive a power cut go to the data EEPROM. EEPROM cells have a limited number of write cycles, so a value is written only when it changes.
+LM35 conversion with measured ADC reference: temperature °C = ADC_count × Vref_mV / (1023 × 10). With Vref = 5000 mV, one count is approximately 0.489°C; this is quantization, not total accuracy. Average several settled readings and compare against a reference thermometer. A short to ground can resemble 0°C, so range checks alone do not prove sensor health.
 
-## 5. Real-time clock (DS1307)
+For SHT31, issue the documented single-shot measurement command, wait for its specified conversion completion, read six bytes, verify both CRC bytes, then convert humidity: RH = 100 × raw_RH / 65535. Retain a timestamp only for a valid sample. A stale or CRC-failed value must not be displayed as a current measurement. Sensor CRC uses polynomial 0x31 with initial value 0xFF.
 
-The DS1307 keeps time and date on its own 32.768 kHz crystal and a coin cell, so the clock keeps running when the board is off. The PIC talks to it as an I²C master over two open-drain lines with pull-up resistors. A read sets the register pointer to 00h, then reads seconds, minutes and hours in one burst.
+## Example settings
 
-![DS1307 over I²C: bus, read transaction and register map](../img/05_ds1307_i2c.svg)
+These are demonstration values, not environmental operating limits for a particular room.
 
-~~~c
-unsigned char sec, min, hr;
+| Setting | Default | Meaning |
+|---|---|---|
+| Fan OFF | 28°C | Stop fan at/below this value |
+| Fan ON | 32°C | Start fan at/above this value |
+| High-temperature alarm | 40°C | Local critical-temperature indication |
+| High humidity | 70% RH | Alarm only; ventilation is not assumed to dehumidify |
+| Stale measurement | 3 seconds | Temperature fault and fan command ON |
+| Unlock pulse | 5 seconds | Timed release |
+| Door-open alarm | 30 seconds | Prolonged opening |
+| Wrong PIN attempts | 3 | Enter keypad lockout |
+| Lockout duration | 30 seconds | Inhibit keypad access; allow exit request |
+| Access time window | Disabled | Optional RTC-based restriction |
 
-I2C1_Start();
-I2C1_Wr(0xD0);            // address 0x68 + write
-I2C1_Wr(0x00);            // register pointer = seconds
-I2C1_Repeated_Start();
-I2C1_Wr(0xD1);            // address 0x68 + read
-sec = I2C1_Rd(1);         // ACK: more bytes follow
-min = I2C1_Rd(1);
-hr  = I2C1_Rd(0);         // NACK: last byte
-I2C1_Stop();
+Validate OFF < ON < high-temperature threshold, humidity in 1–100%, timing bounds and credential format. Reject invalid changes without replacing known-good settings.
 
-seconds = ((sec >> 4) & 0x07) * 10 + (sec & 0x0F);   // BCD to binary
-~~~
+## Firmware architecture
 
-The registers hold BCD, not binary: 0x45 means 45. The top bit of the seconds register (CH) stops the oscillator, so it is cleared when the clock is first set.
+1. Initialize output latches LOW before enabling output pins; the hardware gate pull-downs keep loads de-energized during reset.
+2. Load newest valid EEPROM settings, or defaults with a visible configuration warning.
+3. Start a monotonic millisecond timebase. For an 8 MHz oscillator, Timer2 prescaler 1:16, PR2 = 249, postscaler 1:2 produces a nominal 4 ms tick. Timer ISR only increments the tick. Configure registers against the device data sheet and verify timing on hardware.
+4. Foreground tasks: keypad/door debounce at 20 ms; environment acquisition at 1000 ms; LCD refresh at 250 ms; RTC read at 1000 ms; output decisions every pass.
+5. Implement cooling, access and alarms as independent states. Never stop sensing while waiting for a code, alarm or unlock timeout.
+6. On EEPROM save, keep the old valid slot until the replacement record has been written, checked and committed. The PIC EEPROM library may briefly block or mask interrupts; characterize this and compensate the timebase or defer saves while a timed release is active.
 
-## 6. Output expansion with 74HC595
+### Cooling
 
-When a design needs more outputs than the PIC has pins, 74HC595 shift registers add them eight at a time using only three pins: data, shift clock and latch. Bits are clocked in one by one, then a single latch pulse copies all of them to the outputs together. Chips chain through their serial-out pin, so 16 or 24 outputs still need only those three pins.
+Start fan at ON threshold; hold its previous state within the hysteresis band; stop at OFF threshold. Missing/stale temperature commands fan ON and raises a fault. This is a command policy, not proof of airflow: add fan feedback if detecting a stalled or disconnected fan is required. High humidity raises an alarm; no humidity-driven fan action is assumed.
 
-![74HC595 chain and the SER / SRCLK / RCLK timing for one byte](../img/06_74hc595_output_expansion.svg)
+### Access
 
-~~~c
-void shift_out(unsigned char b) {
-  unsigned char i;
-  for (i = 0; i < 8; i++) {
-    DATA_PIN = (b & 0x80) ? 1 : 0;   // MSB first
-    CLK_PIN = 1;                     // rising edge shifts the bit in
-    CLK_PIN = 0;
-    b <<= 1;
-  }
-}
+Mask entered digits. Confirm using #; clear with *. Match a provisioned credential, then pulse unlock. Three wrong codes trigger timed keypad lockout and an alarm. Physical exit request releases independently of keypad lockout. Door opening without a current authorization window or exit request is flagged; monitor prolonged opening independently. Do not retrigger unlock indefinitely from a held button.
 
-shift_out(high_byte);                // travels on to chip #2
-shift_out(low_byte);                 // stays in chip #1
-LATCH_PIN = 1; LATCH_PIN = 0;        // all outputs change together
-~~~
+The reference keypad lock is not a certified security system. PIN bytes in EEPROM are not encryption, and reference lockout resets on power cycle. Use stronger credential protection, persistent rate limiting, tamper detection and independent emergency egress for a real secured installation.
 
-## 7. Keypad and LCD access control
+### Alarms and display
 
-A keypad and character LCD form a code lock. The keypad is scanned as a matrix: one row is pulled low at a time and the columns are read, so 16 keys need only 8 pins. The entered code is shown as asterisks and compared with the code stored in EEPROM. A match opens the lock through a relay for a set time; a wrong code is counted, and repeated failures trigger the alarm.
+Priority: temperature invalid → high temperature → unauthorized door → prolonged door opening → humidity invalid/high → RTC fault → configuration warning → normal. Acknowledge silences the buzzer for the current active set; visual fault indications remain and a new alarm condition reactivates the buzzer. Display measured temperature, RH, fan state, door state and RTC validity on alternating 16-character screens. Display values are examples, not measured results.
 
-![Keypad matrix scan and the access-control state machine](../img/07_keypad_access_control.svg)
+## EEPROM record
 
-## 8. Nokia 5110 graphic LCD
+Two 32-byte slots use 64 of the PIC's 256 EEPROM bytes. Bytes 0–1 identify magic/version; 2–3 hold a sequence counter; 4–23 hold thresholds, timings, optional schedule and a provisioned PIN; 24–25 store CRC16-CCITT (initial 0xFFFF); byte 31 is commit 0xA5. Unused bytes stay reserved.
 
-The Nokia 5110 module uses the PCD8544 controller: 84 × 48 pixels driven over a serial link with a data/command pin. Display memory is organised in six banks of eight pixel rows. Each byte sent fills one 8-pixel vertical strip, and the column address advances on its own, so text is drawn by sending the columns of each character from a 5 × 7 font table. The panel runs at 3.3 V, so its inputs from a 5 V PIC are level-shifted.
+Save sequence: invalidate inactive slot → write header/payload/CRC → read back and verify → commit last → use newest valid slot. Modular sequence comparison handles wraparound. Validate field ranges after CRC; CRC alone does not establish semantic validity or malicious-tamper resistance. Save only confirmed changes; never write every sensor sample. No event-history database is included in the baseline.
 
-![Nokia 5110: pin functions, 84 × 48 pixel memory in six banks, and how a byte maps to pixels](../img/08_nokia5110_pcd8544.svg)
+## Failure matrix
 
-## 9. Memory technologies and device programming
+| Condition | Reference response | Remaining limitation |
+|---|---|---|
+| Invalid/stale temperature | Fan command ON; fault alarm | Open/short detection needs hardware diagnostics |
+| Humidity CRC/NACK/stale | Mark RH unavailable; fault alarm | Cooling still follows temperature |
+| RTC NACK/CH bit invalid | Flag clock; deny restricted keypad entry | Unrestricted entry and exit still operate |
+| Both settings slots invalid | Defaults + warning | Provision credential before access |
+| Reset / brownout | Outputs LOW, validate, reacquire | Real lock choice determines power-loss state |
+| Door line open | Treat as door open | Short to ground is not detected |
+| Fan drive ON but fan stopped | No airflow proof | Add tachometer/current feedback |
 
-Part of the work covered memory devices and how they are programmed: mask ROM, PROM, UV-erasable EPROM, EEPROM and Flash on the non-volatile side; SRAM, DRAM and battery-backed NV-RAM on the volatile side. On a PIC16 project they map directly to program Flash, data EEPROM, RAM and the DS1307's battery-backed RAM. Hardware device programmers were used to write and verify ICs and memories.
+## Verification and commissioning
 
-![Memory technologies and where each one sits in a PIC16 project](../img/09_memory_technologies.svg)
+The executable reference model is tested with Node's built-in test runner: run `node --test tests/room-controller.test.mjs`. This verifies logic, not a compiled PIC image or physical hardware.
 
-## 10. Beyond PIC: AVR, Arduino, PLC and IoT
+| Test | Procedure | Expected result |
+|---|---|---|
+| Power rails | Measure 12 V/5 V unloaded and switching loads | Within selected component limits |
+| I²C | Identify devices, disconnect each, corrupt a model CRC | Correct device/fault status |
+| Temperature | Compare reference instrument, sweep ADC input | Correct scale; documented calibration |
+| Hysteresis | 27 → 33 → 30 → 28°C | OFF → ON → ON → OFF |
+| Stale temperature | Stop valid acquisition >3 s | Fan ON + fault |
+| Access | Wrong codes, correct code, held buttons, exit | Lockout/pulse/no indefinite release |
+| Door | Authorized open, unauthorized open, long open | Appropriate alarms without blocking |
+| EEPROM | Interrupt every write boundary, restart | Old or fully committed new settings |
+| Reset during release | Reset while lock output ON | Output returns to reset state |
+| Acknowledge | Ack current fault, introduce different fault | Visual state remains; new buzzer alarm |
+| Timing | Scope tick/output pulse with EEPROM saves | Actual deadlines documented |
 
-The same design approach carried over to other platforms:
+Record real instrument values, firmware version, schematic revision and photographs before calling the integrated system built/tested. No such new measurements are invented here.
 
-- **AVR and Arduino:** sensor nodes and quick prototypes using the same building blocks (ADC sampling, timers, I²C and serial peripherals).
-- **PLC:** industrial control logic, with sensors and actuators wired to PLC inputs and outputs.
-- **IoT and telemetry:** sensor readings sent from the embedded node to a monitoring application. The desktop side of this work is in [dotnet-monitoring-apps](https://github.com/Mahyoub88/dotnet-monitoring-apps).
+## Original implementation media and provenance
 
-## 11. Validation checklist
+- [Original EEPROM project poster](../img/persistent-storage/00_project_poster.jpg): preserved unchanged at its existing resolution. It contains implementation/simulation screenshots and is not a photograph of an installed equipment room.
+- [Existing EEPROM summary image](overview/eeprom-system.jpg): preserved unchanged.
+- [Earlier PIC implementation documentation](pic-peripheral-implementations.md): retained complete.
+- Original peripheral SVGs remain unchanged; their explanatory captions distinguish them from physical implementation evidence.
+- The PLC poster remains in the repository as historical related material; it is not presented as a component of this PIC room controller.
 
-The checks below cover each building block, from simulation to the finished board.
+## Primary technical references
 
-| Test | What is checked |
-|---|---|
-| Simulation in Proteus | Logic, timing and display output before any hardware is built |
-| Display test | Every segment and digit lights; no ghosting or flicker |
-| ADC check | Readings against a multimeter at several input voltages |
-| RTC check | Time is kept across a power cycle on the backup cell |
-| Shift-register test | Each output toggles alone; no glitches while shifting |
-| Access control | Correct code opens, wrong code is counted, alarm triggers and resets as designed |
-| Power and drivers | Supply stays stable with relays switching; flyback diodes in place |
+- [Microchip PIC16F87XA data sheet](https://ww1.microchip.com/downloads/en/devicedoc/39582b.pdf)
+- [TI LM35 data sheet](https://www.ti.com/lit/ds/symlink/lm35.pdf)
+- [Sensirion SHT3x-DIS data sheet](https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf)
+- [Analog Devices DS1307 data sheet](https://www.analog.com/media/en/technical-documentation/data-sheets/DS1307.pdf)
 
-## Technologies
+## Extensions
 
-PIC16, mikroC, Proteus, AVR, Arduino, PLC, ADC, Timer0 interrupts, EEPROM, I²C, DS1307, 74HC595, 7-segment multiplexing, character LCD, Nokia 5110 / PCD8544, keypad matrix, relays, device programming, IoT telemetry
-
-## Training
-
-PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Programming Techniques training group).
-
-## Related
-
-- [Industrial Automation & PLC-Based Control Systems](https://github.com/Mahyoub88/industrial-automation-plc), a separate project
-- [Persistent storage](../README.md#persistent-storage), included in this project
-- [Engineering Monitoring & Automation Applications (.NET)](https://github.com/Mahyoub88/dotnet-monitoring-apps)
-- [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
-- [All projects](https://mahyoub88.github.io/#work)
-
-## Illustrated project pages
-
-Project-specific diagrams, source media and implementation context:
-
-- [PIC Embedded Systems — Peripheral Integration & Persistent Storage](https://mahyoub88.github.io/projects/proj-embedded-iot/)
-
-[Browse all engineering case studies](https://mahyoub88.github.io/projects/)
-
-
-## Source context
-
-The peripheral diagrams explain the documented techniques. The PIC training archive includes third-party libraries and examples; these remain credited to their training origin. On-chip EEPROM storage is included in this consolidated project. PLC process control retains separate documentation.
+Fan feedback, tamper supervision, external event storage, an isolated communications link and a documented remote-monitoring protocol are optional extensions. They are not claimed as implemented baseline features.

@@ -1,0 +1,57 @@
+{
+  "policy": "Preserve original files byte for byte; new artifacts use img/equipment-room/.",
+  "files": [
+    {
+      "path": "img/01_system_overview.svg",
+      "sha256": "93343c2a4e68d11493a1d48b71ce8e81c4a9a468afc69c5ef8a042451fda9f7d"
+    },
+    {
+      "path": "img/02_development_workflow.svg",
+      "sha256": "b94a7d93406c2ceadbd79750b1281f922aed176ab052c0f37bb591a7e15b9028"
+    },
+    {
+      "path": "img/03_7segment_multiplexing.svg",
+      "sha256": "02812e7cfed301283c8a44a5dcdabe242c334e2b8311b7c8a0ae61e65cd35843"
+    },
+    {
+      "path": "img/04_adc_timer0_scheduling.svg",
+      "sha256": "78feec66941184df226c909c0814b6eb01476bbb736f9d08ebead124143faea0"
+    },
+    {
+      "path": "img/05_ds1307_i2c.svg",
+      "sha256": "9e621bc23f6d9b5e078be7bd7c8f6385c856cffdbad682fb860c37c909a9df56"
+    },
+    {
+      "path": "img/06_74hc595_output_expansion.svg",
+      "sha256": "208c872285008b6a224fd2ae66921c24a357bd28d027b4e763082e4e89c191ec"
+    },
+    {
+      "path": "img/07_keypad_access_control.svg",
+      "sha256": "da87351123f93e52ec0a3d2a60d5ef4a81c1d135a8c5963d2be09a38995a6bd6"
+    },
+    {
+      "path": "img/08_nokia5110_pcd8544.svg",
+      "sha256": "8d6bdaeb75777bcb26f4b7cdfdca1ae5d8bdd7f2a484d2efc0faacaf709c67a1"
+    },
+    {
+      "path": "img/09_memory_technologies.svg",
+      "sha256": "79d846037322b0237863b4e2467769c9f074398ca09c9ced5b7e403e742f8244"
+    },
+    {
+      "path": "img/persistent-storage/00_project_poster.jpg",
+      "sha256": "2f9ad8a8e7d7e466619cf681f160efa2ca8fe7da0364451011aeacbb53ca9aa2"
+    },
+    {
+      "path": "img/persistent-storage/01_eeprom_store_and_readback.svg",
+      "sha256": "26669d2c6ddd99f30533ce8e541ac40853a6866be775935078ce195e086f7079"
+    },
+    {
+      "path": "docs/overview/eeprom-system.jpg",
+      "sha256": "2f9ad8a8e7d7e466619cf681f160efa2ca8fe7da0364451011aeacbb53ca9aa2"
+    },
+    {
+      "path": "docs/overview/plc-system.jpg",
+      "sha256": "e76529eded2174553ab512a4c81aeabf6f99ead7eadc6a8edab3d6da6272a432"
+    }
+  ]
+}
