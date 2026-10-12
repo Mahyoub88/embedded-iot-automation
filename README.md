@@ -45,6 +45,12 @@ node --test tests/room-controller.test.mjs
 
 ## Preserved original implementation media
 
+## Persistent storage
+
+The baseline uses PIC internal EEPROM for confirmed settings. See the [record layout and save procedure](docs/engineering-guide.md#eeprom-record) and [preserved EEPROM implementation media](img/persistent-storage/00_project_poster.jpg). The new dual-slot format is a reference design, distinct from the original write/read-back implementation.
+
+## Original implementation gallery
+
 ![Original EEPROM project poster](img/persistent-storage/00_project_poster.jpg)
 
 *Original implementation poster, unchanged. Existing screenshots document earlier EEPROM work, not a completed equipment-room installation.*
