@@ -2,7 +2,7 @@
 
 [Read the illustrated web case study](https://mahyoub88.github.io/projects/proj-embedded-iot/) for the project overview and source diagrams.
 
-# Embedded Systems & IoT — PIC Firmware and Peripheral Integration
+# PIC Embedded Systems — Peripheral Integration & Persistent Storage
 
 Designed and prototyped embedded monitoring and control solutions using microcontrollers, sensors, communication modules, actuators and PLC platforms. Most of the firmware targets PIC16 microcontrollers, written in mikroC, simulated in Proteus and then built and tested on hardware.
 
@@ -200,7 +200,7 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 ## Related
 
 - [Industrial Automation & PLC-Based Control Systems](https://github.com/Mahyoub88/industrial-automation-plc), a separate project
-- [Embedded EEPROM Data Storage & Retrieval System](https://github.com/Mahyoub88/eeprom-data-storage-pic), a separate project
+- [Persistent storage](../README.md#persistent-storage), included in this project
 - [Engineering Monitoring & Automation Applications (.NET)](https://github.com/Mahyoub88/dotnet-monitoring-apps)
 - [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
 - [All projects](https://mahyoub88.github.io/#work)
@@ -209,11 +209,11 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 
 Project-specific diagrams, source media and implementation context:
 
-- [Embedded Systems & IoT — PIC Firmware and Peripheral Integration](https://mahyoub88.github.io/projects/proj-embedded-iot/)
+- [PIC Embedded Systems — Peripheral Integration & Persistent Storage](https://mahyoub88.github.io/projects/proj-embedded-iot/)
 
 [Browse all engineering case studies](https://mahyoub88.github.io/projects/)
 
 
 ## Source context
 
-The peripheral diagrams explain the documented techniques. The PIC training archive includes third-party libraries and examples; these remain credited to their training origin. PLC process control and the dedicated EEPROM system are separate projects with their own documentation.
+The peripheral diagrams explain the documented techniques. The PIC training archive includes third-party libraries and examples; these remain credited to their training origin. On-chip EEPROM storage is included in this consolidated project. PLC process control retains separate documentation.

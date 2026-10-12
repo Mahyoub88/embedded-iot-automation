@@ -1,8 +1,8 @@
-# Embedded Systems & IoT — PIC Firmware and Peripheral Integration
+# PIC Embedded Systems — Peripheral Integration & Persistent Storage
 
 [Read case study](https://mahyoub88.github.io/projects/proj-embedded-iot/) · [Project index](docs/PROJECTS.md) · [Engineering guide](docs/engineering-guide.md)
 
-Designed and prototyped embedded monitoring and control solutions using microcontrollers, sensors, communication modules, actuators and PLC platforms. Most of the firmware targets PIC16 microcontrollers, written in mikroC, simulated in Proteus and then built and tested on hardware.
+Implemented PIC16-based embedded applications using mikroC and Proteus, integrating sensor acquisition, LCD/keypad interfaces, real-time clocks and control outputs. Applied on-chip EEPROM read/write techniques to retain stored values across power cycles. Firmware development included Proteus verification followed by hardware implementation.
 
 **Author:** Mohammed Mahyoub · [Portfolio](https://mahyoub88.github.io/projects/proj-embedded-iot/)
 
@@ -187,6 +187,42 @@ The checks below cover each building block, from simulation to the finished boar
 | Access control | Correct code opens, wrong code is counted, alarm triggers and resets as designed |
 | Power and drivers | Supply stays stable with relays switching; flyback diodes in place |
 
+## Persistent storage
+
+On-chip EEPROM storage and retrieval are included in this consolidated project.
+
+![Original EEPROM project poster](img/persistent-storage/00_project_poster.jpg)
+
+The original poster is source media; reference snippets and diagrams explain techniques and do not constitute the complete original firmware.
+
+## How data is stored and read back
+
+The firmware writes each value to an EEPROM address, waits for the write to finish, reads the byte back to confirm it, and shows the result on the display. Because data EEPROM is non-volatile, the stored values are still there after the power is removed, and the firmware restores them at start-up.
+
+![EEPROM store and read-back cycle, start-up restore, an example address map and design rules](img/persistent-storage/01_eeprom_store_and_readback.svg)
+
+## Design rules
+
+- Write only when a value changes, because each EEPROM cell has a limited number of write cycles.
+- Follow the selected PIC device and mikroC library requirements for protecting the write-unlock sequence and preserving interrupt state.
+- Read back after every write to confirm the byte was stored.
+- For multi-byte reference designs, an integrity check and defined recovery behavior are design options, not recovered original firmware features.
+- Split values wider than 8 bits into bytes at consecutive addresses.
+
+## Reference snippet (mikroC style)
+
+~~~c
+void store_byte(unsigned char addr, unsigned char value) {
+  if (EEPROM_Read(addr) == value) return;   // unchanged: save a write cycle
+  EEPROM_Write(addr, value);
+  Delay_ms(20);                             // let the write complete
+  if (EEPROM_Read(addr) != value) {
+    /* report a write error */
+  }
+}
+~~~
+
+
 ## Technologies
 
 PIC16, mikroC, Proteus, AVR, Arduino, PLC, ADC, Timer0 interrupts, EEPROM, I²C, DS1307, 74HC595, 7-segment multiplexing, character LCD, Nokia 5110 / PCD8544, keypad matrix, relays, device programming, IoT telemetry
@@ -198,9 +234,9 @@ PIC Microcontroller Programming with mikroC and Proteus (Microcontroller Program
 ## Related
 
 - [Industrial Automation & PLC-Based Control Systems](https://github.com/Mahyoub88/industrial-automation-plc), a separate project
-- [Embedded EEPROM Data Storage & Retrieval System](https://github.com/Mahyoub88/eeprom-data-storage-pic), a separate project
+- [Legacy EEPROM documentation](https://github.com/Mahyoub88/eeprom-data-storage-pic), now consolidated into this project
 - [Engineering Software — Independent Applications](https://github.com/Mahyoub88/dotnet-monitoring-apps)
 - [Reconnaissance Robot: RGB-D Mapping & Remote Control](https://github.com/Mahyoub88/reconnaissance-robot-rgbd)
 - [All projects](https://mahyoub88.github.io/#work)
 
-- [Embedded Systems & IoT — PIC Firmware and Peripheral Integration — technical walkthrough](docs/technical-walkthroughs/proj-embedded-iot.md)
+- [PIC Embedded Systems — Peripheral Integration & Persistent Storage — technical walkthrough](docs/technical-walkthroughs/proj-embedded-iot.md)

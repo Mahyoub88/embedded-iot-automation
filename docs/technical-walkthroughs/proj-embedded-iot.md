@@ -1,8 +1,8 @@
-# Embedded Systems & IoT — PIC Firmware and Peripheral Integration
+# PIC Embedded Systems — Peripheral Integration & Persistent Storage
 
 ## Timing and peripheral integration responsibilities
 
-This project groups PIC firmware and peripheral implementations: multiplexed displays, timed ADC sensing, the DS1307 RTC, 74HC595 output expansion, keypad access control and the Nokia 5110 display. It is an integration portfolio rather than a claim that every peripheral appears on one physical board. EEPROM persistence has its own independent case study and is linked rather than repeated as another complete implementation here.
+This project groups PIC firmware and peripheral implementations: multiplexed displays, timed ADC sensing, the DS1307 RTC, 74HC595 output expansion, keypad access control and the Nokia 5110 display. It is an integration portfolio rather than a claim that every peripheral appears on one physical board. On-chip EEPROM persistence is included in this consolidated project. See [Persistent storage](../../README.md#persistent-storage) and the [storage walkthrough](proj-eeprom-storage.md).
 
 The central design distinction is between time-critical service and slower foreground work. A display-refresh interrupt advances the active digit; scheduled sampling, conversion, formatting and user-interface updates belong in the foreground where practical. A timing diagram should identify the selected oscillator, timer prescaler and reload before deriving a refresh rate. The public examples explain scheduling, but do not establish those settings for every original build.
 
